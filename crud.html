@@ -3,78 +3,476 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulação CRUD</title>
+    <title>Gerenciamento de Servidores - CRUD</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        form { margin-bottom: 20px; }
-        input, button { margin: 5px; padding: 8px; }
-        ul { list-style-type: none; padding: 0; }
-        li { background: #f4f4f4; margin: 5px 0; padding: 10px; display: flex; justify-content: space-between; }
-        .back-btn { background: #007bff; color: white; text-decoration: none; padding: 10px; border-radius: 5px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+
+        .form-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .form-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: flex;
+            flex-direction: column;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            margin-top: 5px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-add {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-add:hover {
+            background: #218838;
+        }
+
+        .btn-clear {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-clear:hover {
+            background: #5a6268;
+        }
+
+        .table-section {
+            border-left: 5px solid #667eea;
+            padding-left: 0;
+            margin-bottom: 30px;
+        }
+
+        .table-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            padding: 0 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #f8f9fa;
+        }
+
+        thead {
+            background: #667eea;
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:hover {
+            background: #e9ecef;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .status.ativo {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status.inativo {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-edit {
+            background: #ffc107;
+            color: #333;
+            padding: 8px 12px;
+            font-size: 0.9em;
+        }
+
+        .btn-edit:hover {
+            background: #e0a800;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+            padding: 8px 12px;
+            font-size: 0.9em;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 1.1em;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .form-group {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Simulação de CRUD</h1>
-    <a href="index.html" class="back-btn">Voltar ao Início</a>
-    
-    <h2>Adicionar Item</h2>
-    <form id="addForm">
-        <input type="text" id="itemName" placeholder="Nome do item" required>
-        <button type="submit">Adicionar</button>
-    </form>
-    
-    <h2>Itens</h2>
-    <ul id="itemList"></ul>
-    
-    <script>
-        let items = [];
-        let editIndex = -1;
-        
-        const addForm = document.getElementById('addForm');
-        const itemList = document.getElementById('itemList');
-        const itemName = document.getElementById('itemName');
-        
-        addForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = itemName.value.trim();
-            if (name) {
-                if (editIndex === -1) {
-                    items.push(name);
-                } else {
-                    items[editIndex] = name;
-                    editIndex = -1;
-                }
-                itemName.value = '';
-                renderItems();
-            }
-        });
-        
-        function renderItems() {
-            itemList.innerHTML = '';
-            items.forEach((item, index) => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <span>${item}</span>
-                    <div>
-                        <button onclick="editItem(${index})">Editar</button>
-                        <button onclick="deleteItem(${index})">Excluir</button>
+    <div class="container">
+        <div class="header">
+            <h1>🖥️ Gerenciamento de Servidores</h1>
+            <a href="index.html" class="back-btn">← Voltar ao Início</a>
+        </div>
+
+        <div class="content">
+            <!-- Formulário -->
+            <div class="form-section">
+                <h2>Adicionar/Editar Servidor</h2>
+                <form id="serverForm">
+                    <div class="form-group">
+                        <label>
+                            Nome do Servidor:
+                            <input type="text" id="serverName" placeholder="Ex: Server01" required>
+                        </label>
+                        <label>
+                            Tipo:
+                            <select id="serverType" required>
+                                <option value="">Selecionar tipo...</option>
+                                <option value="DHCP">DHCP</option>
+                                <option value="DNS">DNS</option>
+                                <option value="Web">Web</option>
+                                <option value="Email">Email</option>
+                                <option value="FTP">FTP</option>
+                            </select>
+                        </label>
+                        <label>
+                            Endereço IP:
+                            <input type="text" id="serverIP" placeholder="Ex: 192.168.3.10" required>
+                        </label>
+                        <label>
+                            Porto:
+                            <input type="text" id="serverPort" placeholder="Ex: 80" required>
+                        </label>
+                        <label>
+                            Status:
+                            <select id="serverStatus" required>
+                                <option value="Ativo">Ativo</option>
+                                <option value="Inativo">Inativo</option>
+                            </select>
+                        </label>
                     </div>
+                    <div class="button-group">
+                        <button type="submit" class="btn-add" id="submitBtn">Adicionar Servidor</button>
+                        <button type="reset" class="btn-clear">Limpar Formulário</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tabela de Servidores -->
+            <div class="table-section">
+                <h2>Lista de Servidores</h2>
+                <div id="tableContainer">
+                    <div class="empty-message">Nenhum servidor cadastrado. Adicione um novo servidor acima!</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>💻 Sistema de Gerenciamento de Servidores - Simulação CRUD</p>
+        </div>
+    </div>
+
+    <script>
+        let servers = [];
+        let editIndex = -1;
+
+        const form = document.getElementById('serverForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const tableContainer = document.getElementById('tableContainer');
+        const serverNameInput = document.getElementById('serverName');
+        const serverTypeInput = document.getElementById('serverType');
+        const serverIPInput = document.getElementById('serverIP');
+        const serverPortInput = document.getElementById('serverPort');
+        const serverStatusInput = document.getElementById('serverStatus');
+
+        // Carregar dados do localStorage
+        function loadServers() {
+            const saved = localStorage.getItem('servers');
+            if (saved) {
+                servers = JSON.parse(saved);
+                renderServers();
+            }
+        }
+
+        // Salvar dados no localStorage
+        function saveServers() {
+            localStorage.setItem('servers', JSON.stringify(servers));
+        }
+
+        // Renderizar tabela
+        function renderServers() {
+            if (servers.length === 0) {
+                tableContainer.innerHTML = '<div class="empty-message">Nenhum servidor cadastrado. Adicione um novo servidor acima!</div>';
+                return;
+            }
+
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Tipo</th>
+                            <th>Endereço IP</th>
+                            <th>Porto</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            servers.forEach((server, index) => {
+                const statusClass = server.status === 'Ativo' ? 'ativo' : 'inativo';
+                html += `
+                    <tr>
+                        <td><strong>${server.name}</strong></td>
+                        <td>${server.type}</td>
+                        <td>${server.ip}</td>
+                        <td>${server.port}</td>
+                        <td><span class="status ${statusClass}">${server.status}</span></td>
+                        <td>
+                            <div class="actions">
+                                <button type="button" class="btn-edit" onclick="editServer(${index})">Editar</button>
+                                <button type="button" class="btn-delete" onclick="deleteServer(${index})">Excluir</button>
+                            </div>
+                        </td>
+                    </tr>
                 `;
-                itemList.appendChild(li);
             });
+
+            html += `
+                    </tbody>
+                </table>
+            `;
+
+            tableContainer.innerHTML = html;
         }
-        
-        function editItem(index) {
-            itemName.value = items[index];
+
+        // Adicionar/Atualizar servidor
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const server = {
+                name: serverNameInput.value.trim(),
+                type: serverTypeInput.value,
+                ip: serverIPInput.value.trim(),
+                port: serverPortInput.value.trim(),
+                status: serverStatusInput.value
+            };
+
+            if (editIndex === -1) {
+                servers.push(server);
+            } else {
+                servers[editIndex] = server;
+                editIndex = -1;
+                submitBtn.textContent = 'Adicionar Servidor';
+                submitBtn.classList.remove('btn-update');
+            }
+
+            form.reset();
+            saveServers();
+            renderServers();
+        });
+
+        // Editar servidor
+        function editServer(index) {
+            const server = servers[index];
+            serverNameInput.value = server.name;
+            serverTypeInput.value = server.type;
+            serverIPInput.value = server.ip;
+            serverPortInput.value = server.port;
+            serverStatusInput.value = server.status;
+
             editIndex = index;
+            submitBtn.textContent = 'Atualizar Servidor';
+            submitBtn.classList.add('btn-update');
+
+            serverNameInput.focus();
+            window.scrollTo(0, 0);
         }
-        
-        function deleteItem(index) {
-            items.splice(index, 1);
-            renderItems();
+
+        // Excluir servidor
+        function deleteServer(index) {
+            if (confirm('Tem certeza que deseja excluir este servidor?')) {
+                servers.splice(index, 1);
+                saveServers();
+                renderServers();
+            }
         }
-        
-        renderItems();
+
+        // Adicionar estilos para botão de atualização
+        const style = document.createElement('style');
+        style.textContent = `
+            .btn-update {
+                background: #17a2b8 !important;
+            }
+            .btn-update:hover {
+                background: #138496 !important;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Carregar dados ao iniciar
+        loadServers();
     </script>
 </body>
 </html>
