@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação CRUD</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        form { margin-bottom: 20px; }
+        input, button { margin: 5px; padding: 8px; }
+        ul { list-style-type: none; padding: 0; }
+        li { background: #f4f4f4; margin: 5px 0; padding: 10px; display: flex; justify-content: space-between; }
+        .back-btn { background: #007bff; color: white; text-decoration: none; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Simulação de CRUD</h1>
+    <a href="index.html" class="back-btn">Voltar ao Início</a>
+    
+    <h2>Adicionar Item</h2>
+    <form id="addForm">
+        <input type="text" id="itemName" placeholder="Nome do item" required>
+        <button type="submit">Adicionar</button>
+    </form>
+    
+    <h2>Itens</h2>
+    <ul id="itemList"></ul>
+    
+    <script>
+        let items = [];
+        let editIndex = -1;
+        
+        const addForm = document.getElementById('addForm');
+        const itemList = document.getElementById('itemList');
+        const itemName = document.getElementById('itemName');
+        
+        addForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = itemName.value.trim();
+            if (name) {
+                if (editIndex === -1) {
+                    items.push(name);
+                } else {
+                    items[editIndex] = name;
+                    editIndex = -1;
+                }
+                itemName.value = '';
+                renderItems();
+            }
+        });
+        
+        function renderItems() {
+            itemList.innerHTML = '';
+            items.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${item}</span>
+                    <div>
+                        <button onclick="editItem(${index})">Editar</button>
+                        <button onclick="deleteItem(${index})">Excluir</button>
+                    </div>
+                `;
+                itemList.appendChild(li);
+            });
+        }
+        
+        function editItem(index) {
+            itemName.value = items[index];
+            editIndex = index;
+        }
+        
+        function deleteItem(index) {
+            items.splice(index, 1);
+            renderItems();
+        }
+        
+        renderItems();
+    </script>
+</body>
+</html>

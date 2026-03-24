@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trabalho - Cisco Packet Tracer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header .crud-btn {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: background 0.3s ease;
+        }
+        
+        .header .crud-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+        
+        /* Secções */
+        .section {
+            margin-bottom: 40px;
+            border-left: 5px solid #667eea;
+            padding-left: 30px;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section h2::before {
+            content: '▸';
+            margin-right: 15px;
+            font-size: 1.5em;
+        }
+        
+        /* Card de Servidor */
+        .server-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .server-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+        }
+        
+        .server-card h3 {
+            color: #764ba2;
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+        
+        .server-card .image-placeholder {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3em;
+            margin: 15px 0;
+            width: 100%;
+            object-fit: cover;
+        }
+        
+        .server-card p {
+            color: #555;
+            margin: 10px 0;
+            line-height: 1.8;
+        }
+        
+        /* Grid de Servidores */
+        .servers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        /* Topologia */
+        .topology-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .topology-image {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        
+        .topology-description {
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        /* Perguntas e Respostas */
+        .qa-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .qa-item {
+            border-left: 4px solid #667eea;
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .qa-item h4 {
+            color: #764ba2;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .qa-item p {
+            background: white;
+            padding: 12px;
+            border-radius: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        /* Função dos Servidores */
+        .functions-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+        }
+        
+        .function-item {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .function-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .function-item h4 {
+            color: #667eea;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        
+        .function-item p {
+            color: #666;
+            line-height: 1.8;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        /* Modal para imagens */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+        }
+        
+        .modal .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🌐 Cisco Packet Tracer</h1>
+            <p>Configuração de Rede com Servidores e Dispositivos Wireless</p>
+            <a href="crud.html" class="crud-btn">Simulação CRUD</a>
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            
+            <!-- Secção 1: Servidores -->
+            <section class="section">
+                <h2>Servidores de Rede</h2>
+                
+                <div class="servers-grid">
+                    <!-- Servidor DHCP -->
+                    <div class="server-card">
+                        <h3>🔧 Servidor DHCP</h3>
+                        <img src="Imagens/dhcp.png" alt="Servidor DHCP" class="image-placeholder" onclick="showImage(this.src)">
+                        <p><strong>Função:</strong> Atribuição automática de endereços IP aos dispositivos da rede.</p>
+                        <p><strong>Porto:</strong> 67/68 (UDP)</p>
+                        <p>Responsável por distribuir endereços IP dinamicamente aos clientes.</p>
+                    </div>
+                    
+                    <!-- Servidor DNS -->
+                    <div class="server-card">
+                        <h3>📍 Servidor DNS</h3>
+                        <img src="Imagens/dns.png" alt="Servidor DNS" class="image-placeholder" onclick="showImage(this.src)">
+                        <p><strong>Função:</strong> Resolução de nomes de domínio em endereços IP.</p>
+                        <p><strong>Porto:</strong> 53 (UDP/TCP)</p>
+                        <p>Traduz nomes (ex: www.exemplo.com) para endereços IP.</p>
+                    </div>
+                    
+                    <!-- Servidor Web -->
+                    <div class="server-card">
+                        <h3>🌐 Servidor Web</h3>
+                        <img src="Imagens/web.png" alt="Servidor Web" class="image-placeholder" onclick="showImage(this.src)">
+                        <p><strong>Função:</strong> Hospedagem de páginas e aplicações web.</p>
+                        <p><strong>Porto:</strong> 80 (HTTP) / 443 (HTTPS)</p>
+                        <p>Fornece conteúdo web aos clientes através de navegadores.</p>
+                    </div>
+                    
+                    <!-- Servidor Email -->
+                    <div class="server-card">
+                        <h3>📧 Servidor Email</h3>
+                        <img src="Imagens/Captura de ecrã 2026-03-24 154628.png" alt="Servidor Email" class="image-placeholder" onclick="showImage(this.src)">
+                        <p><strong>Função:</strong> Gerenciamento de mensagens de email.</p>
+                        <p><strong>Porto:</strong> 25 (SMTP) / 110 (POP3) / 143 (IMAP)</p>
+                        <p>Processa envio e recepção de mensagens eletrónicas.</p>
+                    </div>
+                    
+                    <!-- Servidor FTP -->
+                    <div class="server-card">
+                        <h3>📁 Servidor FTP</h3>
+                        <img src="Imagens/ftp.png" alt="Servidor FTP" class="image-placeholder" onclick="showImage(this.src)">
+                        <p><strong>Função:</strong> Transferência de ficheiros entre computadores.</p>
+                        <p><strong>Porto:</strong> 21 (Controlo) / 20 (Dados)</p>
+                        <p>Permite upload e download de ficheiros de forma segura.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Secção 2: Ligações Wireless e Topologia -->
+            <section class="section">
+                <h2>Ligações Wireless e Topologia de Rede</h2>
+                
+                <div class="topology-container">
+                    <div class="topology-image">📶 TOPOLOGIA DE REDE</div>
+                    <div class="topology-description">
+                        <h3 style="color: #764ba2; margin-bottom: 15px;">Estrutura da Rede</h3>
+                        <p><strong>📡 Access Points de Alunos:</strong> Responsáveis pela conexão dos computadores e dispositivos dos alunos. Distribuídos estrategicamente para cobertura completa da área de aprendizagem.</p>
+                        <p style="margin-top: 15px;"><strong>👨‍🏫 Access Point dos Professores:</strong> Rede separada e prioritária para garantir qualidade de serviço aos recursos educacionais dos docentes.</p>
+                        <p style="margin-top: 15px;"><strong>🔗 Ligações Wired:</strong> Servidores conectados via Ethernet ao Switch central para garantir velocidade e estabilidade.</p>
+                        <p style="margin-top: 15px;"><strong>🏢 Componentes Principais:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Router/Gateway: 192.168.3.1</li>
+                            <li>Switch Central: Distribuição de tráfego</li>
+                            <li>Servidores (DHCP, DNS, Web, Email, FTP)</li>
+                            <li>Access Points que cobrem toda a instituição</li>
+                            <li>Computadores e dispositivos dos utilizadores</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Secção 3: Perguntas e Respostas -->
+            <section class="section">
+                <h2>Perguntas e Respostas</h2>
+                
+                <div class="qa-container">
+                    <div class="qa-item">
+                        <h4>❓ Pergunta 1: Qual é o endereço IP da rede local configurada no exercício?</h4>
+                        <p>✅ Resposta: 192.168.3.1</p>
+                    </div>
+                    
+                    <div class="qa-item">
+                        <h4>❓ Pergunta 2: Qual é a máscara de sub-rede utilizada na rede?</h4>
+                        <p>✅ Resposta: 255.255.255.0</p>
+                    </div>
+                    
+                    <div class="qa-item">
+                        <h4>❓ Pergunta 3: Qual é o gateway da rede?</h4>
+                        <p>✅ Resposta: 192.168.3.1</p>
+                    </div>
+                    
+                    <div class="qa-item">
+                        <h4>❓ Pergunta 4: Indique o número de endereços IP disponíveis para os computadores.</h4>
+                        <p>✅ Resposta: 254</p>
+                        <p style="margin-top: 8px; font-size: 0.95em; color: #666;"><em>Explicação: Com a máscara 255.255.255.0, temos 256 endereços totais. Descontando o endereço de rede (192.168.3.0) e o broadcast (192.168.3.255), restam 254 endereços disponíveis.</em></p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Secção 4: O que fazem os Servidores -->
+            <section class="section">
+                <h2>Explicação Detalhada - Função dos Servidores</h2>
+                
+                <div class="functions-section">
+                    <div class="function-item">
+                        <h4>🔧 Servidor DHCP (Dynamic Host Configuration Protocol)</h4>
+                        <p>O servidor DHCP é responsável por atribuir automaticamente endereços IP aos dispositivos que se conectam à rede. Quando um computador ou tablet se liga, envia um pedido DHCP e recebe um endereço IP válido, máscara de sub-rede, gateway e servidores DNS. Isto elimina a necessidade de configuração manual, tornando a rede mais dinâmica e flexível. É essencial em ambientes educacionais com muitos dispositivos.</p>
+                    </div>
+                    
+                    <div class="function-item">
+                        <h4>📍 Servidor DNS (Domain Name System)</h4>
+                        <p>O servidor DNS atua como um "telefone de lista" da internet. Quando um utilizador digita "www.google.com" no navegador, o servidor DNS converte este nome em endereço IP correspondente (ex: 142.250.185.46). Sem DNS, seria necessário memorizar endereços IP numéricos. O sistema é hierárquico e distribuído, permitindo a navegação intuitiva na web.</p>
+                    </div>
+                    
+                    <div class="function-item">
+                        <h4>🌐 Servidor Web (HTTP/HTTPS)</h4>
+                        <p>O servidor web hospeda páginas e aplicações que podem ser acedidas através de navegadores. Quando acede a um site, está a comunicar com um servidor web que envia os ficheiros HTML, CSS, JavaScript e imagens. Em ambientes educacionais, pode funcionar como plataforma de aprendizagem, portal de conteúdos ou aplicações educativas. O protocolo HTTPS garante uma comunicação segura e encriptada.</p>
+                    </div>
+                    
+                    <div class="function-item">
+                        <h4>📧 Servidor Email (SMTP, POP3, IMAP)</h4>
+                        <p>O servidor email funciona em dois sentidos: SMTP (Simple Mail Transfer Protocol) para enviar emails e POP3/IMAP para receber e gerir mensagens. Cada utilizador tem uma caixa de correio no servidor. Os emails são armazenados em segurança e podem ser acedidos de qualquer lugar. É fundamental para comunicações institucionais, envio de materiais didáticos e notificações.</p>
+                    </div>
+                    
+                    <div class="function-item">
+                        <h4>📁 Servidor FTP (File Transfer Protocol)</h4>
+                        <p>O servidor FTP permite a transferência segura de ficheiros entre computadores e o servidor. Professores podem fazer upload de materiais didáticos, estudantes podem entregar trabalhos na plataforma FTP, e ficheiros podem ser distribuídos para toda a rede. Oferece um controlo granular de permissões (leitura, escrita, execução) para diferentes utilizadores e grupos. É mais seguro que métodos tradicionais de partilha de ficheiros.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>📚 Trabalho sobre Cisco Packet Tracer - Configuração de Rede Local com Servidores e Wireless</p>
+            <p style="margin-top: 10px;">🎓 Conceptos de Redes e Telecomunicações</p>
+        </div>
+    </div>
+    
+    <!-- Modal para imagens -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img id="modalImage" src="" alt="">
+    </div>
+    
+    <script>
+        function showImage(src) {
+            document.getElementById('modalImage').src = src;
+            document.getElementById('imageModal').style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+        
+        // Fechar modal ao clicar fora da imagem
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
